@@ -5,9 +5,10 @@ import { GroupModule } from './group/group.module';
 import { InvitationModule } from './invitation/invitation.module';
 import { GuestModule } from './guest/guest.module';
 import { UserInvitationModule } from './user-invitation/user-invitation.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [GroupModule, InvitationModule, GuestModule, UserInvitationModule],
+  imports: [GroupModule, InvitationModule, GuestModule, UserInvitationModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })
