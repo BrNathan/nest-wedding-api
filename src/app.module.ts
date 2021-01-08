@@ -6,9 +6,19 @@ import { InvitationModule } from './invitation/invitation.module';
 import { GuestModule } from './guest/guest.module';
 import { UserInvitationModule } from './user-invitation/user-invitation.module';
 import { UserModule } from './user/user.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [GroupModule, InvitationModule, GuestModule, UserInvitationModule, UserModule],
+  imports: [
+    GroupModule,
+    InvitationModule,
+    GuestModule,
+    UserInvitationModule,
+    UserModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
