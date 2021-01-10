@@ -1,5 +1,12 @@
 import { TimestampEntities } from 'src/generics/timestamp.entities';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/entity/user.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'guest',
@@ -14,21 +21,31 @@ export class Guest extends TimestampEntities {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   isSpouse?: boolean;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   isOther?: boolean;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   isUser?: boolean;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   isChildren?: boolean;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   age?: number;
 
-  @Column()
-  userId: number;
+  @ManyToOne(() => User, (user) => user.guests)
+  user: User;
 }

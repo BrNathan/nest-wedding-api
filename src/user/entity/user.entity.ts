@@ -1,12 +1,23 @@
 import { TimestampEntities } from 'src/generics/timestamp.entities';
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Group } from 'src/group/entity/group.entity';
+import { Guest } from 'src/guest/entity/guest.entity';
+import { UserInvitation } from 'src/user-invitation/entity/user-invitation.entity';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'user' })
 export class User extends TimestampEntities {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @PrimaryColumn({
+  @Column({
     unique: true,
     length: 6,
   })
@@ -29,18 +40,16 @@ export class User extends TimestampEntities {
   @Column()
   isAlreadyConnected?: boolean;
 
-  @Column()
-  groupId: number;
+  @ManyToOne(() => Group)
+  group: Group;
 
-  // @hasMany(() => Guest)
-  // guests?: Guest[];
+  @OneToMany(() => UserInvitation, (userInvitation) => userInvitation.user, {
+    eager: true,
+  })
+  userInvitations?: UserInvitation[];
 
-  // @hasMany(() => Invitation, {
-  //   through: {
-  //     model: () => UserInvitation,
-  //     keyFrom: 'userId',
-  //     keyTo: 'invitationId'
-  //   }
-  // })
-  // invitations?: Invitation[];
+  @OneToMany(() => Guest, (guest) => guest.user, {
+    eager: true,
+  })
+  guests: Guest[];
 }

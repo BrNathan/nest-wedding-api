@@ -1,5 +1,6 @@
 import { TimestampEntities } from 'src/generics/timestamp.entities';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { UserInvitation } from 'src/user-invitation/entity/user-invitation.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'invitation',
@@ -20,4 +21,7 @@ export class Invitation extends TimestampEntities {
     nullable: false,
   })
   label: string;
+
+  @OneToMany(() => UserInvitation, (userInvitation) => userInvitation.user)
+  userInvitations?: UserInvitation[];
 }

@@ -1,6 +1,6 @@
 import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 
-export class TimestampEntities {
+export abstract class TimestampEntities {
   @CreateDateColumn({
     update: false,
   })
