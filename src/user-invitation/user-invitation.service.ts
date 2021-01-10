@@ -1,22 +1,37 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { AddUserInvitationDto } from './dto/add-user-invitation.dto';
 import { UserInvitation } from './entity/user-invitation.entity';
 
 @Injectable()
 export class UserInvitationService {
-  deleteById(id: number) {
-    throw new Error('Method not implemented.');
+  constructor(
+    @InjectRepository(UserInvitation)
+    private readonly userInvitationRepository: Repository<UserInvitation>,
+  ) {}
+
+  async deleteById(id: number) {
+    return await this.userInvitationRepository.softDelete({ id: id });
   }
-  updateById(id: number, newUserInvitation: Partial<AddUserInvitationDto>) {
-    throw new Error('Method not implemented.');
+  async updateById(
+    id: number,
+    newUserInvitation: Partial<AddUserInvitationDto>,
+  ) {
+    return await this.userInvitationRepository.update(
+      { id: id },
+      newUserInvitation,
+    );
   }
-  findById(id: number): Promise<UserInvitation> {
-    throw new Error('Method not implemented.');
+  async findById(id: number): Promise<UserInvitation> {
+    return await this.userInvitationRepository.findOneOrFail(id);
   }
-  findAll(): Promise<UserInvitation[]> {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<UserInvitation[]> {
+    return await this.userInvitationRepository.find();
   }
-  create(newUserInvitation: AddUserInvitationDto): Promise<UserInvitation> {
+  async create(
+    newUserInvitation: AddUserInvitationDto,
+  ): Promise<UserInvitation> {
     throw new Error('Method not implemented.');
   }
 }

@@ -1,7 +1,6 @@
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -10,12 +9,12 @@ import {
   Min,
 } from 'class-validator';
 
-export class AddGuestDto {
-  @IsNotEmpty()
+export class UpdateGuestDto {
+  @IsOptional()
   @IsString()
   firstName: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   lastName: string;
 
@@ -47,7 +46,7 @@ export class AddGuestDto {
   @Max(100)
   age?: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsPositive()
   userId: number;
 }

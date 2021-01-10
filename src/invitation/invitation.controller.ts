@@ -9,6 +9,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { AddInvitationDto } from './dto/add-invitation.dto';
+import { UpdateInvitationDto } from './dto/update-invitation.dto';
 import { Invitation } from './entity/invitation.entity';
 import { InvitationService } from './invitation.service';
 
@@ -34,7 +35,7 @@ export class InvitationController {
   @Patch(':id')
   async updateById(
     @Param('id', ParseIntPipe) id: number,
-    @Body() newInvitation: Partial<AddInvitationDto>,
+    @Body() newInvitation: UpdateInvitationDto,
   ): Promise<void> {
     await this.invitationService.updateById(id, newInvitation);
   }

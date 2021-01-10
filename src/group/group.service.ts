@@ -1,22 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { AddGroupDto } from './dto/add-group.dto';
+import { UpdateGroupDto } from './dto/update-group.dto';
 import { Group } from './entity/group.entity';
 
 @Injectable()
 export class GroupService {
-  deleteById(id: number) {
-    throw new Error('Method not implemented.');
+  constructor(
+    @InjectRepository(Group)
+    private readonly groupRepository: Repository<Group>,
+  ) {}
+
+  async deleteById(id: number) {
+    return await this.groupRepository.softDelete({ id: id });
   }
-  updateById(id: number, newGroup: Partial<AddGroupDto>) {
-    throw new Error('Method not implemented.');
+  async updateById(id: number, newGroup: UpdateGroupDto) {
+    const group = await this.groupRepository.preload({
+      id,
+      ...newGroup,
+    });
+    if (!group) {
+      throw new NotFoundException(`Cannot find guest with id : ${id}`);
+    }
+    return await this.groupRepository.save(group);
   }
-  findById(id: number): Promise<Group> {
-    throw new Error('Method not implemented.');
+  async findById(id: number): Promise<Group> {
+    return await this.groupRepository.findOneOrFail(id);
   }
-  findAll(): Promise<Group[]> {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<Group[]> {
+    return await this.groupRepository.find();
   }
-  create(newGroup: AddGroupDto): Promise<Group> {
-    throw new Error('Method not implemented.');
+  async create(newGroup: AddGroupDto): Promise<Group> {
+    return await this.groupRepository.save(newGroup);
   }
 }

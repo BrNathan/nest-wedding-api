@@ -1,22 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { AddGuestDto } from './dto/add-guest.dto';
+import { UpdateGuestDto } from './dto/update-guest.dto';
 import { Guest } from './entity/guest.entity';
 
 @Injectable()
 export class GuestService {
-  deleteById(id: number) {
-    throw new Error('Method not implemented.');
+  constructor(
+    @InjectRepository(Guest)
+    private readonly guestRepository: Repository<Guest>,
+  ) {}
+
+  async deleteById(id: number) {
+    return await this.guestRepository.softDelete({ id: id });
   }
-  updateById(id: number, newGuest: Partial<AddGuestDto>) {
-    throw new Error('Method not implemented.');
+  async updateById(id: number, newGuest: UpdateGuestDto) {
+    const guest = await this.guestRepository.preload({
+      id,
+      ...newGuest,
+    });
+    if (!guest) {
+      throw new NotFoundException(`Cannot find guest with id : ${id}`);
+    }
+    return await this.guestRepository.save(guest);
   }
-  findById(id: number): Promise<Guest> {
-    throw new Error('Method not implemented.');
+  async findById(id: number): Promise<Guest> {
+    return await this.guestRepository.findOneOrFail(id);
   }
-  findAll(): Promise<Guest[]> {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<Guest[]> {
+    return await this.guestRepository.find();
   }
-  create(newGuest: AddGuestDto): Promise<Guest> {
-    throw new Error('Method not implemented.');
+  async create(newGuest: AddGuestDto): Promise<Guest> {
+    return await this.guestRepository.save(newGuest);
   }
 }

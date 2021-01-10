@@ -1,22 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { AddUserDto } from './dto/add-user.dto';
 import { User } from './entity/user.entity';
 
 @Injectable()
 export class UserService {
-  deleteById(id: number) {
-    throw new Error('Method not implemented.');
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
+
+  async deleteById(id: number) {
+    return await this.userRepository.softDelete({ id: id });
   }
-  updateById(id: number, newUser: Partial<AddUserDto>) {
-    throw new Error('Method not implemented.');
+  async updateById(id: number, newUser: Partial<AddUserDto>) {
+    return await this.userRepository.update({ id: id }, newUser);
   }
-  findById(id: number): Promise<User> {
-    throw new Error('Method not implemented.');
+  async findById(id: number): Promise<User> {
+    return await this.userRepository.findOneOrFail(id);
   }
-  findAll(): Promise<User[]> {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find();
   }
-  create(newUser: AddUserDto): Promise<User> {
+  async create(newUser: AddUserDto): Promise<User> {
     throw new Error('Method not implemented.');
   }
 }

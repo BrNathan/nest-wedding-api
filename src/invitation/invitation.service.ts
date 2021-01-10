@@ -1,22 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { AddInvitationDto } from './dto/add-invitation.dto';
+import { UpdateInvitationDto } from './dto/update-invitation.dto';
 import { Invitation } from './entity/invitation.entity';
 
 @Injectable()
 export class InvitationService {
-  deleteById(id: number) {
-    throw new Error('Method not implemented.');
+  constructor(
+    @InjectRepository(Invitation)
+    private readonly invitationRepository: Repository<Invitation>,
+  ) {}
+
+  async deleteById(id: number) {
+    return await this.invitationRepository.softDelete({ id: id });
   }
-  updateById(id: number, newInvitation: Partial<AddInvitationDto>) {
-    throw new Error('Method not implemented.');
+  async updateById(id: number, newInvitation: UpdateInvitationDto) {
+    const invitation = await this.invitationRepository.preload({
+      id,
+      ...newInvitation,
+    });
+    if (!invitation) {
+      throw new NotFoundException(`Cannot find guest with id : ${id}`);
+    }
+    return await this.invitationRepository.save(invitation);
   }
-  findById(id: number): Promise<Invitation> {
-    throw new Error('Method not implemented.');
+  async findById(id: number): Promise<Invitation> {
+    return await this.invitationRepository.findOneOrFail(id);
   }
-  findAll(): Promise<Invitation[]> {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<Invitation[]> {
+    return await this.invitationRepository.find();
   }
-  create(newInvitation: AddInvitationDto): Promise<Invitation> {
-    throw new Error('Method not implemented.');
+  async create(newInvitation: AddInvitationDto): Promise<Invitation> {
+    return await this.invitationRepository.save(newInvitation);
   }
 }

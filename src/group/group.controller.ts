@@ -9,6 +9,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { AddGroupDto } from './dto/add-group.dto';
+import { UpdateGroupDto } from './dto/update-group.dto';
 import { Group } from './entity/group.entity';
 import { GroupService } from './group.service';
 
@@ -34,7 +35,7 @@ export class GroupController {
   @Patch(':id')
   async updateById(
     @Param('id', ParseIntPipe) id: number,
-    @Body() newGroup: Partial<AddGroupDto>,
+    @Body() newGroup: UpdateGroupDto,
   ): Promise<void> {
     await this.groupService.updateById(id, newGroup);
   }
