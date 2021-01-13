@@ -9,6 +9,10 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { EnvironmentKey, EnvironmentName } from './keys';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guards';
+import { RolesGuard } from './guards/role.guard';
 
 @Module({
   imports: [
@@ -24,20 +28,31 @@ import { AuthModule } from './auth/auth.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get('DB_HOST'),
-        port: +configService.get<number>('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_DATABASE'),
+        host: configService.get(EnvironmentKey.DB_HOST),
+        port: +configService.get<number>(EnvironmentKey.DB_PORT),
+        username: configService.get(EnvironmentKey.DB_USERNAME),
+        password: configService.get(EnvironmentKey.DB_PASSWORD),
+        database: configService.get(EnvironmentKey.DB_DATABASE),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: configService.get('NODE_ENV') !== 'production',
-        retryAttempts: 2,
+        synchronize:
+          configService.get(EnvironmentKey.NODE_ENV) !== EnvironmentName.PROD,
+        retryAttempts: 4,
       }),
       inject: [ConfigService],
     }),
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

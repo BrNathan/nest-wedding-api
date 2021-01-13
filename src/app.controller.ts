@@ -1,6 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
+import { Public } from './decorator/public.decorator';
+import { EnvironmentKey } from './keys';
 
 @Controller()
 export class AppController {
@@ -9,11 +11,12 @@ export class AppController {
     private readonly configService: ConfigService,
   ) {}
 
+  @Public()
   @Get()
-  getHello(): any {
+  config(): any {
     return {
       hello: this.appService.getHello(),
-      env: this.configService.get('NODE_ENV'),
+      env: this.configService.get(EnvironmentKey.NODE_ENV),
     };
   }
 }

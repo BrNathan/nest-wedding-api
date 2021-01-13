@@ -5,10 +5,8 @@ import { UserInvitation } from 'src/user-invitation/entity/user-invitation.entit
 import {
   Column,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -25,6 +23,7 @@ export class User extends TimestampEntities {
 
   @Column({
     unique: true,
+    nullable: true,
   })
   email?: string;
 
@@ -32,13 +31,18 @@ export class User extends TimestampEntities {
   password: string;
 
   @Column()
+  salt: string;
+
+  @Column()
   firstName: string;
 
   @Column()
   lastName: string;
 
-  @Column()
-  isAlreadyConnected?: boolean;
+  @Column({
+    default: false,
+  })
+  isAlreadyConnected: boolean;
 
   @ManyToOne(() => Group)
   group: Group;

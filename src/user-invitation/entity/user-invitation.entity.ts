@@ -23,7 +23,7 @@ export class UserInvitation extends TimestampEntities {
   @ManyToOne(() => Invitation, (invitation) => invitation.userInvitations, {
     eager: true,
   })
-  invitation: number;
+  invitation: Invitation;
 
   @Column({ nullable: true })
   answer?: boolean;
