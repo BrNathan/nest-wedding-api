@@ -26,7 +26,7 @@ export class AuthService {
     newUser.password = await bcrypt.hash(newUser.password, newUser.salt);
 
     try {
-      this.userRepository.save(newUser);
+      await this.userRepository.save(newUser);
     } catch (error) {
       throw new ConflictException(error);
     }

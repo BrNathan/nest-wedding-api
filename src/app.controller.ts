@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AppService } from './app.service';
+import { AppService, GlobalMandatoryDataResult } from './app.service';
 import { Public } from './decorator/public.decorator';
 import { EnvironmentKey } from './keys';
 
@@ -20,8 +20,14 @@ export class AppController {
     };
   }
 
-  @Get()
-  initData(): any {
+  @Public()
+  @Get('init/mandatory')
+  async initMandatoryData(): Promise<GlobalMandatoryDataResult> {
+    return await this.appService.initMandatotyData();
+  }
+
+  @Get('init/user')
+  initUserData(): any {
     return {};
   }
 }

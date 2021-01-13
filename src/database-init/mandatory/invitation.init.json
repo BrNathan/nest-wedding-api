@@ -1,0 +1,14 @@
+[
+  {
+    "code": "MAI",
+    "label": "Mariage Civil"
+  },
+  {
+    "code": "CER",
+    "label": "Cérémonie Laïque"
+  },
+  {
+    "code": "REP",
+    "label": "Diner"
+  }
+]

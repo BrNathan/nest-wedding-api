@@ -13,6 +13,11 @@ import { EnvironmentKey, EnvironmentName } from './keys';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guards';
 import { RolesGuard } from './guards/role.guard';
+import { Role } from './role/entity/role.entity';
+import { Invitation } from './invitation/entity/invitation.entity';
+import { User } from './user/entity/user.entity';
+import { UserInvitation } from './user-invitation/entity/user-invitation.entity';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -41,6 +46,10 @@ import { RolesGuard } from './guards/role.guard';
       inject: [ConfigService],
     }),
     AuthModule,
+    TypeOrmModule.forFeature([Role]),
+    TypeOrmModule.forFeature([Invitation]),
+    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([UserInvitation]),
   ],
   controllers: [AppController],
   providers: [

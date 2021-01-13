@@ -1,0 +1,10 @@
+[
+  {
+    "username": "ADM628",
+    "password": "AZERTY_ADM",
+    "firstname": "Admin",
+    "lastname": "The Geek",
+    "role": "ADM",
+    "invitations": ["MAI", "CER", "REP"]
+  }
+]
