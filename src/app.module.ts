@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GroupModule } from './group/group.module';
+import { RoleModule } from './role/role.module';
 import { InvitationModule } from './invitation/invitation.module';
 import { GuestModule } from './guest/guest.module';
 import { UserInvitationModule } from './user-invitation/user-invitation.module';
@@ -16,7 +16,7 @@ import { RolesGuard } from './guards/role.guard';
 
 @Module({
   imports: [
-    GroupModule,
+    RoleModule,
     InvitationModule,
     GuestModule,
     UserInvitationModule,

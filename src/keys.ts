@@ -14,7 +14,7 @@ export enum EnvironmentName {
   DEV = 'development',
 }
 
-export enum Role {
+export enum ERole {
   ADMIN = 'ADM',
   INVITE = 'INV',
 }

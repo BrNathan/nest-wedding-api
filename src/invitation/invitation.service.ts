@@ -21,7 +21,7 @@ export class InvitationService {
       ...newInvitation,
     });
     if (!invitation) {
-      throw new NotFoundException(`Cannot find guest with id : ${id}`);
+      throw new NotFoundException(`Cannot find invitation with id : ${id}`);
     }
     return await this.invitationRepository.save(invitation);
   }

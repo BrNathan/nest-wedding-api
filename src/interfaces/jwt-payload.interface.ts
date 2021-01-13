@@ -2,7 +2,7 @@ export interface JwtPayload {
   id: number;
   username: string;
   email: string;
-  userGroup: string;
+  userRole: string;
   userInvitations: string[];
   isAlreadyConnected: boolean;
   firstName: string;

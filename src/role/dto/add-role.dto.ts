@@ -6,7 +6,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class AddGroupDto {
+export class AddRoleDto {
   @IsString()
   @IsNotEmpty()
   @Length(3, 3)

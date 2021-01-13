@@ -6,7 +6,7 @@ import {
   IsOptional,
 } from 'class-validator';
 
-export class UpdateGroupDto {
+export class UpdateRoleDto {
   @IsString()
   @IsOptional()
   @Length(3, 3)

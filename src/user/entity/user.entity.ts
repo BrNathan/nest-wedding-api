@@ -1,5 +1,5 @@
 import { TimestampEntities } from 'src/generics/timestamp.entities';
-import { Group } from 'src/group/entity/group.entity';
+import { Role } from 'src/role/entity/role.entity';
 import { Guest } from 'src/guest/entity/guest.entity';
 import { UserInvitation } from 'src/user-invitation/entity/user-invitation.entity';
 import {
@@ -44,8 +44,8 @@ export class User extends TimestampEntities {
   })
   isAlreadyConnected: boolean;
 
-  @ManyToOne(() => Group)
-  group: Group;
+  @ManyToOne(() => Role)
+  role: Role;
 
   @OneToMany(() => UserInvitation, (userInvitation) => userInvitation.user, {
     eager: true,

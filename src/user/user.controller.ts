@@ -9,7 +9,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { Roles } from 'src/decorator/roles.decorator';
-import { Role } from 'src/keys';
+import { ERole } from 'src/keys';
 import { AddUserDto } from './dto/add-user.dto';
 import { User } from './entity/user.entity';
 import { UserService } from './user.service';
@@ -18,25 +18,25 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Post()
   async create(@Body() newUser: AddUserDto): Promise<User> {
     return await this.userService.create(newUser);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Get()
   async findAll(): Promise<User[]> {
     return await this.userService.findAll();
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Get(':id')
   async findById(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return await this.userService.findById(id);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Patch(':id')
   async updateById(
     @Param('id', ParseIntPipe) id: number,
@@ -45,7 +45,7 @@ export class UserController {
     await this.userService.updateById(id, newUser);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Delete(':id')
   async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.userService.deleteById(id);

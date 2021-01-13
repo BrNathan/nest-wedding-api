@@ -2,9 +2,9 @@ import { TimestampEntities } from 'src/generics/timestamp.entities';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
-  name: 'group',
+  name: 'role',
 })
-export class Group extends TimestampEntities {
+export class Role extends TimestampEntities {
   @PrimaryGeneratedColumn()
   id: number;
 

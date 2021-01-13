@@ -37,7 +37,7 @@ export class AuthService {
   async verifyCredentials(credentials: CredentialsDto): Promise<User> {
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.group', 'group')
+      .leftJoinAndSelect('user.role', 'role')
       .where('user.email = :usernameOrEmail', {
         usernameOrEmail: credentials.emailOrUsername,
       })
@@ -72,7 +72,7 @@ export class AuthService {
       id: user?.id,
       username: user?.username,
       email: user?.email,
-      userGroup: user?.group?.code,
+      userRole: user?.role?.code,
       userInvitations: user?.userInvitations?.map((ui) => ui?.invitation?.code),
       isAlreadyConnected: user?.isAlreadyConnected,
       firstName: user?.firstName,

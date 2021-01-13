@@ -19,4 +19,9 @@ export class AppController {
       env: this.configService.get(EnvironmentKey.NODE_ENV),
     };
   }
+
+  @Get()
+  initData(): any {
+    return {};
+  }
 }

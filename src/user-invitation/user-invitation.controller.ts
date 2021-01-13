@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { Roles } from 'src/decorator/roles.decorator';
-import { Role } from 'src/keys';
+import { ERole } from 'src/keys';
 import { AddUserInvitationDto } from './dto/add-user-invitation.dto';
 import { UserInvitation } from './entity/user-invitation.entity';
 import { UserInvitationService } from './user-invitation.service';
@@ -18,7 +18,7 @@ import { UserInvitationService } from './user-invitation.service';
 export class UserInvitationController {
   constructor(private readonly userInvitationService: UserInvitationService) {}
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Post()
   async create(
     @Body() newUserInvitation: AddUserInvitationDto,
@@ -26,13 +26,13 @@ export class UserInvitationController {
     return await this.userInvitationService.create(newUserInvitation);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Get()
   async findAll(): Promise<UserInvitation[]> {
     return await this.userInvitationService.findAll();
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Get(':id')
   async findById(
     @Param('id', ParseIntPipe) id: number,
@@ -40,7 +40,7 @@ export class UserInvitationController {
     return await this.userInvitationService.findById(id);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Patch(':id')
   async updateById(
     @Param('id', ParseIntPipe) id: number,
@@ -49,7 +49,7 @@ export class UserInvitationController {
     await this.userInvitationService.updateById(id, newUserInvitation);
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Delete(':id')
   async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.userInvitationService.deleteById(id);

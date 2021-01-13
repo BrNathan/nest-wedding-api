@@ -4,7 +4,7 @@ import { Public } from 'src/decorator/public.decorator';
 import { Roles } from 'src/decorator/roles.decorator';
 import { UserJwt } from 'src/decorator/user-jwt.decorator';
 import { AuthToken } from 'src/interfaces/auth-token.interface';
-import { Role } from 'src/keys';
+import { ERole } from 'src/keys';
 import { User } from 'src/user/entity/user.entity';
 import { AuthService } from './auth.service';
 import { CredentialsDto } from './dto/credentials.dto';
@@ -30,7 +30,7 @@ export class AuthController {
     return { token: token };
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(ERole.ADMIN)
   @Post('refreshToken')
   async refreshToken(@UserJwt() userInfo): Promise<AuthToken> {
     //const user: User =

@@ -5,5 +5,5 @@ export class AddUserDto {
   firstName: string;
   lastName: string;
   isAlreadyConnected?: boolean;
-  groupId: number;
+  roleId: number;
 }
