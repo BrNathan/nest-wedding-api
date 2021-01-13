@@ -2,7 +2,8 @@ import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppService, GlobalMandatoryDataResult } from './app.service';
 import { Public } from './decorator/public.decorator';
-import { EnvironmentKey } from './keys';
+import { Roles } from './decorator/roles.decorator';
+import { EnvironmentKey, ERole } from './keys';
 
 @Controller()
 export class AppController {
@@ -26,6 +27,7 @@ export class AppController {
     return await this.appService.initMandatotyData();
   }
 
+  @Roles(ERole.ADMIN)
   @Get('init/user')
   initUserData(): any {
     return {};
