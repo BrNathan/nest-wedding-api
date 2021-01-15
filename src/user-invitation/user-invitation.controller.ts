@@ -7,10 +7,16 @@ import {
   Delete,
   Param,
   ParseIntPipe,
+  ForbiddenException,
 } from '@nestjs/common';
+import { EROFS } from 'constants';
 import { Roles } from 'src/decorator/roles.decorator';
+import { UserJwt } from 'src/decorator/user-jwt.decorator';
+import { UserJwtPayload } from 'src/interfaces/jwt-payload.interface';
 import { ERole } from 'src/keys';
 import { AddUserInvitationDto } from './dto/add-user-invitation.dto';
+import { AnswerUserInvitation } from './dto/answer-user-invitation.dto';
+import { UserInvitationByUser } from './dto/user-invitation-by-user.dto';
 import { UserInvitation } from './entity/user-invitation.entity';
 import { UserInvitationService } from './user-invitation.service';
 
@@ -53,5 +59,48 @@ export class UserInvitationController {
   @Delete(':id')
   async deleteById(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.userInvitationService.deleteById(id);
+  }
+
+  @Roles(ERole.ADMIN, ERole.INVITE)
+  @Get('user/:userId')
+  async getByUser(
+    @Param('userId', ParseIntPipe) userId: number,
+    @UserJwt() userInfo: UserJwtPayload,
+  ): Promise<UserInvitationByUser[]> {
+    if (userInfo.id !== userId && userInfo.userRole !== ERole.ADMIN) {
+      throw new ForbiddenException("You don't have access to this ressource");
+    }
+
+    const userInvitation = await this.userInvitationService.findByUser(userId);
+    return userInvitation.map((ui) => {
+      return {
+        answer: ui.answer,
+        id: ui.id,
+        userId: ui.user.id,
+        invitationId: ui.invitation.id,
+        invitation: {
+          code: ui.invitation.code,
+          label: ui.invitation.label,
+          id: ui.invitation.id,
+        },
+      };
+    });
+  }
+
+  @Roles(ERole.ADMIN, ERole.INVITE)
+  @Patch('answer/user/:userId')
+  async answerByUser(
+    @Param('userId', ParseIntPipe) userId: number,
+    @UserJwt() userInfo: UserJwtPayload,
+    @Body() answersUserInvitation: AnswerUserInvitation,
+  ): Promise<{ count: number }> {
+    if (userInfo.id !== userId && userInfo.userRole !== ERole.ADMIN) {
+      throw new ForbiddenException("You don't have access to this ressource");
+    }
+
+    return await this.userInvitationService.answerUserInvitation(
+      userId,
+      answersUserInvitation,
+    );
   }
 }

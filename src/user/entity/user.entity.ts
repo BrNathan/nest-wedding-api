@@ -44,7 +44,7 @@ export class User extends TimestampEntities {
   })
   isAlreadyConnected: boolean;
 
-  @ManyToOne(() => Role)
+  @ManyToOne(() => Role, { eager: true })
   role: Role;
 
   @OneToMany(() => UserInvitation, (userInvitation) => userInvitation.user, {

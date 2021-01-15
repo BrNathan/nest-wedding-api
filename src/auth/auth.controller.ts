@@ -1,18 +1,21 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { userInfo } from 'os';
+import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
 import { Public } from 'src/decorator/public.decorator';
 import { Roles } from 'src/decorator/roles.decorator';
 import { UserJwt } from 'src/decorator/user-jwt.decorator';
 import { AuthToken } from 'src/interfaces/auth-token.interface';
+import { UserJwtPayload } from 'src/interfaces/jwt-payload.interface';
 import { ERole } from 'src/keys';
 import { User } from 'src/user/entity/user.entity';
+import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { CredentialsDto } from './dto/credentials.dto';
-import { RegisterNewUserDto } from './dto/register-new-user.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   // @Post()
   // async register(
@@ -30,11 +33,17 @@ export class AuthController {
     return { token: token };
   }
 
-  @Roles(ERole.ADMIN)
+  @Roles(ERole.ADMIN, ERole.INVITE)
   @Post('refreshToken')
-  async refreshToken(@UserJwt() userInfo): Promise<AuthToken> {
-    //const user: User =
-    // const token: string = await this.authService.generateToken(user);
-    return { token: 'TODO TOKEN' };
+  async refreshToken(@UserJwt() userInfo: UserJwtPayload): Promise<AuthToken> {
+    const user: User = await this.userService.findById(userInfo.id);
+
+    if (user === null) {
+      throw new UnauthorizedException('user not find');
+    }
+
+    const token: string = await this.authService.generateToken(user);
+
+    return { token: token };
   }
 }

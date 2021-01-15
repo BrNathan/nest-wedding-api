@@ -10,7 +10,7 @@ import { RegisterNewUserDto } from './dto/register-new-user.dto';
 import * as bcrypt from 'bcrypt';
 import { CredentialsDto } from './dto/credentials.dto';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from 'src/interfaces/jwt-payload.interface';
+import { UserJwtPayload } from 'src/interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -45,7 +45,7 @@ export class AuthService {
         usernameOrEmail: credentials.emailOrUsername,
       });
 
-    const foundUser: User = await queryBuilder.getOne();
+    let foundUser: User = await queryBuilder.getOne();
 
     if (!foundUser) {
       throw new NotFoundException(
@@ -64,11 +64,17 @@ export class AuthService {
       );
     }
 
+    foundUser = await this.userRepository.findOneOrFail({
+      where: {
+        id: foundUser.id,
+      },
+    });
+
     return foundUser;
   }
 
   async generateToken(user: User): Promise<string> {
-    const payload: JwtPayload = {
+    const payload: UserJwtPayload = {
       id: user?.id,
       username: user?.username,
       email: user?.email,
