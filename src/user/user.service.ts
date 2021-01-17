@@ -32,6 +32,7 @@ export class UserService {
   async completeUserInfo(userId: number, newUser: CompleteUser): Promise<User> {
     const user = await this.userRepository.findOneOrFail(userId);
 
+    user.isAlreadyConnected = true;
     user.firstName = newUser.firstName;
     user.lastName = newUser.lastName;
     user.email = newUser.email;

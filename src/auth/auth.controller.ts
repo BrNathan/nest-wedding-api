@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Public } from 'src/decorator/public.decorator';
 import { Roles } from 'src/decorator/roles.decorator';
 import { UserJwt } from 'src/decorator/user-jwt.decorator';
@@ -34,7 +40,7 @@ export class AuthController {
   }
 
   @Roles(ERole.ADMIN, ERole.INVITE)
-  @Post('refreshToken')
+  @Get('refresh-token')
   async refreshToken(@UserJwt() userInfo: UserJwtPayload): Promise<AuthToken> {
     const user: User = await this.userService.findById(userInfo.id);
 
