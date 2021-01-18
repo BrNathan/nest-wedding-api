@@ -1,5 +1,5 @@
 export class GetMinimalUserInfo {
   id: number;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
 }

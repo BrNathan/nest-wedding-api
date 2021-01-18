@@ -52,9 +52,9 @@ export class UserController {
     }
     const user: User = await this.userService.findById(userId);
     return {
-      firstname: user.firstName,
+      firstName: user.firstName,
       id: user.id,
-      lastname: user.lastName,
+      lastName: user.lastName,
     };
   }
 

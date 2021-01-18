@@ -165,6 +165,14 @@ export class AppService {
     const resultInit: AdminMandatoryDataResult[] = [];
 
     for (const initUser of initialUsers) {
+      const result: AdminMandatoryDataResult = {
+        username: initUser.username,
+        created: false,
+        onError: false,
+        userInvitationLink: [],
+        userRoleLink: null,
+      };
+
       try {
         const numberCount = await this.userRepository.count({
           where: {
@@ -172,19 +180,11 @@ export class AppService {
           },
         });
 
-        const result: AdminMandatoryDataResult = {
-          username: initUser.username,
-          created: false,
-          onError: true,
-          userInvitationLink: [],
-          userRoleLink: null,
-        };
-
         //INSERT NEW USER
         if (numberCount === 0) {
           const registerNewUser: RegisterNewUserDto = {
-            firstName: initUser.firstname,
-            lastName: initUser.lastname,
+            firstName: initUser.firstName,
+            lastName: initUser.lastName,
             password: initUser.password,
             username: initUser.username,
           };
@@ -273,16 +273,10 @@ export class AppService {
             });
           }
         }
-
-        resultInit.push(result);
       } catch (error) {
-        resultInit.push({
-          username: initUser.username,
-          userRoleLink: null,
-          userInvitationLink: null,
-          created: false,
-          onError: true,
-        });
+        result.onError = true;
+      } finally {
+        resultInit.push(result);
       }
     }
 

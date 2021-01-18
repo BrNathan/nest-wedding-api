@@ -3,8 +3,8 @@ import { Role } from 'src/role/entity/role.entity';
 export interface AddNewUserDto {
   username: string;
   password: string;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   role: Role;
   invitations: string[];
 }
