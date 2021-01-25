@@ -7,7 +7,7 @@ import * as fs from 'fs';
 import { resolve } from 'path';
 import { AddRoleDto } from './role/dto/add-role.dto';
 import { AddInvitationDto } from './invitation/dto/add-invitation.dto';
-import { AddNewUserDto } from './database-init/user/add-new-user.dto';
+import { AddNewUserDto } from './interfaces/add-new-user.dto';
 import { AuthService } from './auth/auth.service';
 import { User } from './user/entity/user.entity';
 import { RegisterNewUserDto } from './auth/dto/register-new-user.dto';
@@ -23,7 +23,7 @@ export interface RoleInitMandatoryDataResult extends InsertDataResult {
 export interface InvitationInitMandatoryDataResult extends InsertDataResult {
   invitationCode: string;
 }
-export interface AdminMandatoryDataResult extends InsertDataResult {
+export interface UserAddDataResult extends InsertDataResult {
   username: string;
   userRoleLink: RoleInitMandatoryDataResult;
   userInvitationLink: InvitationInitMandatoryDataResult[];
@@ -32,7 +32,11 @@ export interface AdminMandatoryDataResult extends InsertDataResult {
 export interface GlobalMandatoryDataResult {
   role: RoleInitMandatoryDataResult[];
   invitation: InvitationInitMandatoryDataResult[];
-  admin: AdminMandatoryDataResult[];
+  admin: UserAddDataResult[];
+}
+
+export interface InitUserDataResult {
+  users: UserAddDataResult[];
 }
 
 @Injectable()
@@ -61,7 +65,7 @@ export class AppService {
       './database-init/mandatory/invitation.init.json',
     );
     const adminResult = await this.initNewUserData(
-      './database-init/mandatory/user.init.json',
+      './database-init/mandatory/admin-user.init.json',
     );
 
     return {
@@ -71,6 +75,13 @@ export class AppService {
     };
   }
 
+  async initUserData(): Promise<InitUserDataResult> {
+    const usersResult = await this.initNewUserData(
+      './database-init/user/user.init.json',
+    );
+
+    return { users: usersResult };
+  }
   private async initRoleData(
     jsonInitFilePath: string,
   ): Promise<RoleInitMandatoryDataResult[]> {
@@ -157,15 +168,15 @@ export class AppService {
 
   private async initNewUserData(
     jsonInitFilePath: string,
-  ): Promise<AdminMandatoryDataResult[]> {
+  ): Promise<UserAddDataResult[]> {
     const initialUsers = this.readJsonInitValue<AddNewUserDto[]>(
       jsonInitFilePath,
     );
 
-    const resultInit: AdminMandatoryDataResult[] = [];
+    const resultInit: UserAddDataResult[] = [];
 
     for (const initUser of initialUsers) {
-      const result: AdminMandatoryDataResult = {
+      const result: UserAddDataResult = {
         username: initUser.username,
         created: false,
         onError: false,

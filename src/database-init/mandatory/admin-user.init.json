@@ -1,0 +1,18 @@
+[
+  {
+    "username": "ADM999",
+    "password": "AZERTY_ADM_999",
+    "firstName": "",
+    "lastName": "",
+    "role": "ADM",
+    "invitations": ["MAI", "CER", "REP"]
+  },
+  {
+    "username": "ADM111",
+    "password": "AZERTY_ADM_111",
+    "firstName": "AmélieAdmin",
+    "lastName": "AndréAdmin",
+    "role": "ADM",
+    "invitations": ["MAI", "CER", "REP"]
+  }
+]

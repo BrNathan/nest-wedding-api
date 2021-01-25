@@ -3,13 +3,12 @@ import {
   Post,
   Body,
   Get,
-  Patch,
   Delete,
   Param,
   ParseIntPipe,
   ForbiddenException,
+  Put,
 } from '@nestjs/common';
-import { EROFS } from 'constants';
 import { Roles } from 'src/decorator/roles.decorator';
 import { UserJwt } from 'src/decorator/user-jwt.decorator';
 import { UserJwtPayload } from 'src/interfaces/jwt-payload.interface';
@@ -47,7 +46,7 @@ export class UserInvitationController {
   }
 
   @Roles(ERole.ADMIN)
-  @Patch(':id')
+  @Put(':id')
   async updateById(
     @Param('id', ParseIntPipe) id: number,
     @Body() newUserInvitation: Partial<AddUserInvitationDto>,
@@ -88,7 +87,7 @@ export class UserInvitationController {
   }
 
   @Roles(ERole.ADMIN, ERole.INVITE)
-  @Patch('answer/user/:userId')
+  @Put('answer/user/:userId')
   async answerByUser(
     @Param('userId', ParseIntPipe) userId: number,
     @UserJwt() userInfo: UserJwtPayload,

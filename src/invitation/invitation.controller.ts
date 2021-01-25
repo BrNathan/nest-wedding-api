@@ -5,8 +5,8 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { Roles } from 'src/decorator/roles.decorator';
 import { ERole } from 'src/keys';
@@ -38,7 +38,7 @@ export class InvitationController {
   }
 
   @Roles(ERole.ADMIN)
-  @Patch(':id')
+  @Put(':id')
   async updateById(
     @Param('id', ParseIntPipe) id: number,
     @Body() newInvitation: UpdateInvitationDto,

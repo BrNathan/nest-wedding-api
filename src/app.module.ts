@@ -9,7 +9,7 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { EnvironmentKey, EnvironmentName } from './keys';
+import { EBoolean, EnvironmentKey, EnvironmentName } from './keys';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guards';
 import { RolesGuard } from './guards/role.guard';
@@ -17,7 +17,6 @@ import { Role } from './role/entity/role.entity';
 import { Invitation } from './invitation/entity/invitation.entity';
 import { User } from './user/entity/user.entity';
 import { UserInvitation } from './user-invitation/entity/user-invitation.entity';
-import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -40,6 +39,8 @@ import { AuthService } from './auth/auth.service';
         database: configService.get(EnvironmentKey.DB_DATABASE),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize:
+          configService.get(EnvironmentKey.DB_ENBALE_SYNCHRONISE) ===
+            EBoolean.TRUE &&
           configService.get(EnvironmentKey.NODE_ENV) !== EnvironmentName.PROD,
         retryAttempts: 4,
       }),

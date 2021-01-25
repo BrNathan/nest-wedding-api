@@ -42,4 +42,13 @@ export class UserService {
 
     return updatedUser;
   }
+
+  async isEmailAvailable(emailToCheck: string): Promise<boolean> {
+    const result: number = await this.userRepository.count({
+      where: {
+        email: emailToCheck,
+      },
+    });
+    return result === 0;
+  }
 }

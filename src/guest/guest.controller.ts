@@ -6,8 +6,8 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { Roles } from 'src/decorator/roles.decorator';
 import { UserJwt } from 'src/decorator/user-jwt.decorator';
@@ -43,7 +43,7 @@ export class GuestController {
   }
 
   @Roles(ERole.ADMIN)
-  @Patch(':id')
+  @Put(':id')
   async updateById(
     @Param('id', ParseIntPipe) id: number,
     @Body() newGuest: UpdateGuestDto,

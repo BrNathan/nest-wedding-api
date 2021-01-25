@@ -1,6 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AppService, GlobalMandatoryDataResult } from './app.service';
+import {
+  AppService,
+  GlobalMandatoryDataResult,
+  InitUserDataResult,
+} from './app.service';
 import { Public } from './decorator/public.decorator';
 import { Roles } from './decorator/roles.decorator';
 import { EnvironmentKey, ERole } from './keys';
@@ -17,7 +21,6 @@ export class AppController {
   config(): any {
     return {
       hello: this.appService.getHello(),
-      env: this.configService.get(EnvironmentKey.NODE_ENV),
     };
   }
 
@@ -29,7 +32,19 @@ export class AppController {
 
   @Roles(ERole.ADMIN)
   @Get('init/user')
-  initUserData(): any {
-    return {};
+  async initUserData(): Promise<InitUserDataResult> {
+    return await this.appService.initUserData();
+  }
+
+  @Roles(ERole.ADMIN)
+  @Get('getConfig')
+  getConfig(): any {
+    const toto = Object.values(EnvironmentKey);
+    return toto.map((t) => {
+      return {
+        key: EnvironmentKey[t],
+        value: this.configService.get(EnvironmentKey[t]),
+      };
+    });
   }
 }
