@@ -51,6 +51,23 @@ export class UserController {
     return { count: user ? 1 : 0 };
   }
 
+  @Roles(ERole.ADMIN, ERole.INVITE)
+  @Get('minimal/:userId')
+  async getMinimalUserInfoById(
+    @Param('userId', ParseIntPipe) userId: number,
+    @UserJwt() userInfo: UserJwtPayload,
+  ): Promise<GetMinimalUserInfo> {
+    if (userInfo.id !== userId && userInfo.userRole !== ERole.ADMIN) {
+      throw new ForbiddenException("You don't have access to this ressource");
+    }
+    const user: User = await this.userService.findById(userId);
+    return {
+      firstName: user.firstName,
+      id: user.id,
+      lastName: user.lastName,
+    };
+  }
+
   @Roles(ERole.ADMIN)
   @Post()
   async create(@Body() newUser: AddUserDto): Promise<User> {
@@ -67,23 +84,6 @@ export class UserController {
   @Get(':id')
   async findById(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return await this.userService.findById(id);
-  }
-
-  @Roles(ERole.ADMIN)
-  @Get('minimal/:userId')
-  async getMinimalUserInfoById(
-    @Param('userId', ParseIntPipe) userId: number,
-    @UserJwt() userInfo: UserJwtPayload,
-  ): Promise<GetMinimalUserInfo> {
-    if (userInfo.id !== userId && userInfo.userRole !== ERole.ADMIN) {
-      throw new ForbiddenException("You don't have access to this ressource");
-    }
-    const user: User = await this.userService.findById(userId);
-    return {
-      firstName: user.firstName,
-      id: user.id,
-      lastName: user.lastName,
-    };
   }
 
   @Roles(ERole.ADMIN)
