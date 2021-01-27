@@ -264,6 +264,78 @@
     ]
   },
   {
+    "username": "AND678",
+    "password": "HLS2ALR4",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "MAI",
+      "CER",
+      "REP"
+    ]
+  },
+  {
+    "username": "AND354",
+    "password": "BNY9BNW3",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "MAI",
+      "CER",
+      "REP"
+    ]
+  },
+  {
+    "username": "BRU628",
+    "password": "FKZ1DJP3",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "MAI",
+      "CER",
+      "REP"
+    ]
+  },
+  {
+    "username": "BRU294",
+    "password": "AKP9ENW6",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "MAI",
+      "CER",
+      "REP"
+    ]
+  },
+  {
+    "username": "DAV722",
+    "password": "CLY1AMP9",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "MAI",
+      "CER",
+      "REP"
+    ]
+  },
+  {
+    "username": "BRU942",
+    "password": "GJR3ANY5",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "MAI",
+      "CER",
+      "REP"
+    ]
+  },
+  {
     "username": "BJN266",
     "password": "FMT3HLS5",
     "firstName": "",
@@ -988,6 +1060,72 @@
     ]
   },
   {
+    "username": "BOU532",
+    "password": "HLQ3BMV4",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "CER",
+      "REP"
+    ]
+  },
+  {
+    "username": "KAT573",
+    "password": "HNT8FJW8",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "CER",
+      "REP"
+    ]
+  },
+  {
+    "username": "RIC968",
+    "password": "CKT9EMY8",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "CER",
+      "REP"
+    ]
+  },
+  {
+    "username": "TOT384",
+    "password": "FLZ3CMQ3",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "CER",
+      "REP"
+    ]
+  },
+  {
+    "username": "JUJ974",
+    "password": "HNR3EKS8",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "CER",
+      "REP"
+    ]
+  },
+  {
+    "username": "VAL257",
+    "password": "DMY4HNT5",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "CER",
+      "REP"
+    ]
+  },
+  {
     "username": "ZRY727",
     "password": "GLY9FNW3",
     "firstName": "",
@@ -1400,6 +1538,36 @@
   {
     "username": "LAS803",
     "password": "BMR3FLW9",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "CER"
+    ]
+  },
+  {
+    "username": "LEB482",
+    "password": "FLW7FKQ9",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "CER"
+    ]
+  },
+  {
+    "username": "SAN829",
+    "password": "GLZ9DNT4",
+    "firstName": "",
+    "lastName": "",
+    "role": "INV",
+    "invitations": [
+      "CER"
+    ]
+  },
+  {
+    "username": "ALF264",
+    "password": "HJZ4DJR6",
     "firstName": "",
     "lastName": "",
     "role": "INV",
