@@ -18,7 +18,7 @@ import { UserModule } from 'src/user/user.module';
     }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>(EnvironmentKey.JWT_SECRET),
         signOptions: {
           algorithm: 'HS256',
