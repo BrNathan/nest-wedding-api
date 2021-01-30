@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AddUserDto } from './dto/add-user.dto';
@@ -13,6 +13,24 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
+  async changePassword(
+    username: string,
+    newPassword: string,
+  ): Promise<boolean> {
+    try {
+      const user = await this.userRepository.findOneOrFail({
+        where: { username: username },
+      });
+
+      user.password = await bcrypt.hash(newPassword, user.salt);
+
+      await this.userRepository.save(user);
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
   async deleteById(id: number) {
     return await this.userRepository.softDelete({ id: id });
   }

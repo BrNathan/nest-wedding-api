@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,12 +10,14 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { stringify } from 'querystring';
 import { Roles } from 'src/decorator/roles.decorator';
 import { UserJwt } from 'src/decorator/user-jwt.decorator';
 import { UserJwtPayload } from 'src/interfaces/jwt-payload.interface';
 import { ERole } from 'src/keys';
 import { GetMinimalUserInfo } from 'src/user-invitation/dto/get-minimal-user-info.dto';
 import { AddUserDto } from './dto/add-user.dto';
+import { ChangePassword } from './dto/change-password.dto';
 import { CompleteUser } from './dto/complete-user.dto';
 import { EmailChecked } from './dto/email-checked.dto';
 import { User } from './entity/user.entity';
@@ -23,6 +26,25 @@ import { UserService } from './user.service';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Roles(ERole.ADMIN)
+  @Post('change-password')
+  async changePassword(
+    @Body() changePasswordData: ChangePassword,
+    @UserJwt() userInfo: UserJwtPayload,
+  ): Promise<{ username: string; result: boolean }> {
+    if (userInfo.username === changePasswordData.username) {
+      throw new BadRequestException(
+        'You cannot change your own password, please ask to another Admin user',
+      );
+    }
+    const result: boolean = await this.userService.changePassword(
+      changePasswordData.username,
+      changePasswordData.newPassword,
+    );
+
+    return { username: changePasswordData.username, result: result };
+  }
 
   @Roles(ERole.ADMIN, ERole.INVITE)
   @Post('available-email')
