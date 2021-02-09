@@ -14,6 +14,7 @@ import { UserJwt } from 'src/decorator/user-jwt.decorator';
 import { UserJwtPayload } from 'src/interfaces/jwt-payload.interface';
 import { ERole } from 'src/keys';
 import { AddGuestDto } from './dto/add-guest.dto';
+import { GetGuestResult } from './dto/get-guest-result.dto';
 import { GuestByUser } from './dto/guest-by-user.dto';
 import { RefreshGuestByUser } from './dto/refresh-guest-by-user.dto';
 import { UpdateGuestDto } from './dto/update-guest.dto';
@@ -23,6 +24,17 @@ import { GuestService } from './guest.service';
 @Controller('guest')
 export class GuestController {
   constructor(private readonly guestService: GuestService) {}
+
+  @Roles(ERole.ADMIN)
+  @Get('get-guest/:invitation')
+  async recoverGuestByInvitation(
+    @Param('invitation') invitationCode: string,
+    @UserJwt() userInfo: UserJwtPayload,
+  ): Promise<GetGuestResult[]> {
+    return await this.guestService.getGuestByInvitationCode(
+      invitationCode.toUpperCase(),
+    );
+  }
 
   @Roles(ERole.ADMIN)
   @Post()

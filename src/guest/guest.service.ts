@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserInvitation } from 'src/user-invitation/entity/user-invitation.entity';
 import { User } from 'src/user/entity/user.entity';
 import { Connection, Repository } from 'typeorm';
 import { AddGuestDto } from './dto/add-guest.dto';
+import { GetGuest, GetGuestResult } from './dto/get-guest-result.dto';
 import { RefreshGuestByUser } from './dto/refresh-guest-by-user.dto';
 import { UpdateGuestDto } from './dto/update-guest.dto';
 import { Guest } from './entity/guest.entity';
@@ -12,6 +14,8 @@ export class GuestService {
   constructor(
     @InjectRepository(Guest)
     private readonly guestRepository: Repository<Guest>,
+    @InjectRepository(UserInvitation)
+    private readonly userInvitationRepository: Repository<UserInvitation>,
     private readonly connection: Connection,
   ) {}
 
@@ -105,6 +109,37 @@ export class GuestService {
     }
 
     return result;
+  }
+
+  async getGuestByInvitationCode(
+    invitationCode: string,
+  ): Promise<GetGuestResult[]> {
+    const result = await this.userInvitationRepository
+      .createQueryBuilder('UI')
+      .innerJoinAndSelect('UI.user', 'user')
+      .innerJoinAndSelect('UI.invitation', 'invitation')
+      .innerJoinAndSelect('user.guests', 'guest')
+      .where('invitation.code = :invitationCode', {
+        invitationCode: invitationCode,
+      })
+      .andWhere('guest.deletedAt is NULL')
+      .getMany();
+
+    return result.map((ui) => {
+      return {
+        username: ui.user.username,
+        answer: ui.answer,
+        email: ui.user.email,
+        userFullname: ui.user.firstName + ' ' + ui.user.lastName,
+        invitationCode: ui.invitation.code,
+        guests: ui.user.guests.map((g) => {
+          return {
+            fullname: g.firstName + ' ' + g.lastName,
+            age: g.age,
+          } as GetGuest;
+        }),
+      } as GetGuestResult;
+    });
   }
 
   //   const userGuests = [...guests.map(g => {
