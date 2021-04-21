@@ -11,6 +11,7 @@ import { UserJwt } from 'src/decorator/user-jwt.decorator';
 import { AuthToken } from 'src/interfaces/auth-token.interface';
 import { UserJwtPayload } from 'src/interfaces/jwt-payload.interface';
 import { ERole } from 'src/keys';
+import { ChangePassword } from 'src/user/dto/change-password.dto';
 import { User } from 'src/user/entity/user.entity';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
@@ -51,5 +52,18 @@ export class AuthController {
     const token: string = await this.authService.generateToken(user);
 
     return { token: token };
+  }
+
+  @Public()
+  @Post('forget-password')
+  async forgetPassword(
+    @Body() changePasswordData: ChangePassword,
+  ): Promise<{ username: string; result: boolean }> {
+    const result: boolean = await this.userService.changePassword(
+      changePasswordData.username,
+      changePasswordData.newPassword,
+    );
+
+    return { username: changePasswordData.username, result: result };
   }
 }
